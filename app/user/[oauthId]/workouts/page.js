@@ -2,32 +2,31 @@
 import React from 'react'
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Workouts from '@/components/Workouts';
 import { getUserWorkouts } from '@/app/api/UserService';
 
 import workoutData from '@/workout';
+import { get } from 'react-hook-form';
 
-const ShowWorkouts = () => {
+const ShowWorkouts = ({ workouts }) => {
     const { data: session } = useSession();
-    const [jwt, setJwt] = useState(null)
-    const [oauthId, setOauthId] = useState(null)
+
     const [data, setData] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
 
-    console.log(workoutData)
 
     useEffect(() => {
-        if (session) {
-            setJwt(session.user.jwt)
-            setOauthId(session.user.oauthId)
-            getUserWorkouts(oauthId, jwt)
-                .then(res => { setData(res.data) })
+        const fetchWorkouts = async () => {
+            await getUserWorkouts(session.user.oauthId, session.user.jwt)
+                .then(res => { setData(res?.data) })
                 .then(setIsLoading(false))
         }
 
-    }, [session])
+        if (session?.user.jwt) {
+            fetchWorkouts()
+        }
 
+    }, [session])
 
     if (isLoading) return <div>Loading...</div>
     if (!data) return <div>Not found</div>
@@ -36,5 +35,6 @@ const ShowWorkouts = () => {
         <Workouts data={workoutData} />
     )
 }
+
 
 export default ShowWorkouts

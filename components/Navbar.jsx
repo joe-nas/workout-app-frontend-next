@@ -2,10 +2,12 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const setUpProviders = async () => {
@@ -22,6 +24,7 @@ const Navbar = () => {
   return (
 
     <div className="navbar bg-base-100">
+
       <div className="flex-1">
         <a className="btn btn-ghost normal-case text-xl">Iron Delirium</a>
       </div>
@@ -33,10 +36,10 @@ const Navbar = () => {
                 <summary>Workouts</summary>
                 <ul className="p-2 bg-base-100">
                   <li>
-                    <Link href="/user/:username/workouts">Previous</Link>
+                    <div onClick={() => router.push(`/user/${session?.user.oauthId}/workouts`)}>Previous</div>
                   </li>
                   <li>
-                    <Link href="/user/:username/workouts/create">Create</Link>
+                    <div onClick={() => router.pusg(`/user/${session?.user.oauthId}/create`)}>Create</div>
                   </li>
                 </ul>
               </details>
@@ -64,6 +67,9 @@ const Navbar = () => {
                     </li>
                   ))}
                 <li>
+                  <button className="btn" onClick={() => document.getElementById('my_modal_2').showModal()}>open modal</button>
+                </li>
+                <li>
                   <button type="button" onClick={signOut}>
                     Logout
                   </button>
@@ -76,7 +82,7 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-    </div>
+    </div >
   );
 };
 

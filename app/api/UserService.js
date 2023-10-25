@@ -33,6 +33,23 @@ export const getUserWorkouts = async (oauthId, jwt) => {
   return res
 }
 
+
+
+// export const getUserWorkouts = async (oauthId, jwt) => {
+//   const res = await fetch(
+//     `http://localhost8080/api/user/${oauthId}/workouts`,
+//     {
+//       headers: {
+//         "Authorization": `Bearer ${jwt}`,
+//         "Access-Control-Allow-Origin": "http://localhost:3000",
+//         Origin: "http://localhost:3000"
+//       }
+//     }
+//   );
+//   const data = await res.json();
+//   return data;
+// }
+
 export const createUserWorkout = async (oauthId, jwt, workout) => {
   const res = await apiClient.post(
     `/api/user/${oauthId}/workouts`,

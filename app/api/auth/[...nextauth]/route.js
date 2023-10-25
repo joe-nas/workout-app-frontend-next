@@ -20,7 +20,8 @@ import { getUser, createUser } from "../../UserService";
  * @param {Function} options.callbacks.jwt - A function that generates a JSON Web Token (JWT) for the authenticated user.
  * @returns {Object} - The NextAuth handler function.
  */
-const handler = NextAuth({
+
+const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -152,5 +153,7 @@ const handler = NextAuth({
       return token
     }
   }
-});
-export { handler as GET, handler as POST, handler as PUT, handler as DELETE };
+};
+
+const handler = NextAuth(authOptions);
+export { authOptions, handler, handler as GET, handler as POST, handler as PUT, handler as DELETE };
