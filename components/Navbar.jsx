@@ -4,27 +4,30 @@ import { useState, useEffect } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 const Navbar = () => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
 
   useEffect(() => {
-    const setProviders = async () => {
+    const setUpProviders = async () => {
       const response = await getProviders();
 
       setProviders(response);
     };
 
-    setProviders();
+    setUpProviders();
   }, []);
 
+
+
   return (
+
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <a className="btn btn-ghost normal-case text-xl">Iron Delirium</a>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          {isUserLoggedIn ? (
+          {session?.user ? (
             <li>
               <details>
                 <summary>Workouts</summary>
