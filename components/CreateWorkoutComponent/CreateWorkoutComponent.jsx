@@ -46,17 +46,10 @@ export default function CreateWorkoutComponent() {
     <div className="flex flex-row justify-center">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-row justify-between px-7 pt-7">
-          <input
-            type="text"
-            id="workoutName"
-            placeholder="Enter A Workout Name"
-            {...register("workoutName", { required: true })}
-            className="input focus:outline-none "
-          />
-          <button type="submit" className="btn">
-            Complete Workout
-          </button>
+          <WorkoutNameInputField register={register} />
+          <SubmitWorkoutButton />
         </div>
+
         <div className="border rounded-md m-5">
           <CreateExercise
             {...{
@@ -73,3 +66,25 @@ export default function CreateWorkoutComponent() {
     </div>
   );
 }
+
+const WorkoutNameInputField = ({ register }) => {
+  return (
+    <div>
+      <input
+        type="text"
+        id="workoutName"
+        placeholder="Enter A Workout Name"
+        {...register("workoutName", { required: true })}
+        className="input focus:outline-none "
+      />
+    </div>
+  );
+};
+
+const SubmitWorkoutButton = () => {
+  return (
+    <button className="btn" type="submit">
+      Submit Workout
+    </button>
+  );
+};
