@@ -14,9 +14,12 @@ export default function CreateSet({ nestIndex, control, register }) {
         return (
           <div key={set.id}>
             <div className="join m-2">
+              {/* Set Number */}
               <button className="btn rounded-l-full join-item">
                 Set {index + 1}
               </button>
+
+              {/* Reps */}
               <input
                 {...register(`exercises.${nestIndex}.sets.${index}.reps`, {
                   required: true,
@@ -26,6 +29,8 @@ export default function CreateSet({ nestIndex, control, register }) {
                 placeholder="Reps"
                 className="input input-bordered join-item"
               />
+
+              {/* Weight */}
               <input
                 {...register(`exercises.${nestIndex}.sets.${index}.weight`, {
                   required: true,
@@ -35,6 +40,8 @@ export default function CreateSet({ nestIndex, control, register }) {
                 placeholder="Weight"
                 className="input input-bordered bordered join-item"
               />
+
+              {/* RPE */}
               <input
                 {...register(`exercises.${nestIndex}.sets.${index}.rpe`, {
                   required: false,
@@ -45,6 +52,8 @@ export default function CreateSet({ nestIndex, control, register }) {
                 placeholder="RPE"
                 className="input input-bordered bordered join-item"
               />
+
+              {/* Done */}
               <input
                 {...register(`exercises.${nestIndex}.sets.${index}.done`, {
                   required: false,
@@ -53,6 +62,8 @@ export default function CreateSet({ nestIndex, control, register }) {
                 type="checkbox"
                 className="toggle toggle-lg join-item h-12"
               />
+
+              {/* Delete Set */}
               <button
                 type="button"
                 onClick={() => remove(index)}
@@ -64,6 +75,8 @@ export default function CreateSet({ nestIndex, control, register }) {
           </div>
         );
       })}
+
+      {/* Add Set */}
       <button
         type="button"
         onClick={() =>

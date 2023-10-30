@@ -3,7 +3,6 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import { getUser, createUser } from "../../UserService";
 
-
 /**
  * This file contains the NextAuth configuration for authentication providers, callbacks and JWT generation.
  * @module /f:/Coding/JavaScript/workout-app-frontend-next/app/api/auth/[...nextauth]/route.js
@@ -26,9 +25,7 @@ const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      scope: [
-        'https://www.googleapis.com/auth/userinfo.profile',
-      ]
+      scope: ["https://www.googleapis.com/auth/userinfo.profile"],
     }),
     // GithubProvider({
     //   clientId: process.env.GITHUB_ID,
@@ -36,7 +33,6 @@ const authOptions = {
     // }),
   ],
   callbacks: {
-
     /**
      * Updates the session with user data from the database.
      * @function
@@ -47,15 +43,19 @@ const authOptions = {
      * @returns {Object} - The updated session object.
      */
     async session({ session, token }) {
-
       // get user data from database
       try {
-        const sessionUser = await getUser(token.oauthId)
-
+        const sessionUser = await getUser(token.oauthId);
+        console.log(JSON.stringify(token));
         // console.log(chalk.bgGreenBright("Session User:", JSON.stringify(sessionUser)))
-        console.log(token.jwt)
         if (sessionUser) {
-          console.log(chalk.bgGreenBright(`session: getUser: status code ${JSON.stringify(sessionUser.status)} - ${JSON.stringify(sessionUser.data)}`))
+          console.log(
+            chalk.bgGreenBright(
+              `session: getUser: status code ${JSON.stringify(
+                sessionUser.status
+              )} - ${JSON.stringify(sessionUser.data)}`
+            )
+          );
           return {
             ...session,
             user: {
@@ -64,17 +64,18 @@ const authOptions = {
               jwt: token.jwt,
               oauthId: token.oauthId,
               provider: token.oauthProvider,
-              image: token.image,
-            }
-          }
+              image: token.picture,
+            },
+          };
         }
       } catch (err) {
-        err.status === 404 ? console.log(chalk.bgRedBright("User not found")) : console.log(chalk.bgRedBright(err.status))
+        err.status === 404
+          ? console.log(chalk.bgRedBright("User not found"))
+          : console.log(chalk.bgRedBright(err.status));
       }
-      console.log(chalk.bgRedBright("Session User not found"))
-      return session
-    }
-    ,
+      console.log(chalk.bgRedBright("Session User not found"));
+      return session;
+    },
     /**
      * Sign in function for authentication.
      * @function
@@ -91,12 +92,17 @@ const authOptions = {
       const username = profile.name.replace(" ", "");
       const email = profile.email;
 
-
       var userExists = false;
 
       try {
         const userResponse = await getUser(profile.sub);
-        console.log(chalk.blueBright(`signIn: getUser: status code ${JSON.stringify(userResponse.status)} - ${JSON.stringify(userResponse.data)}`))
+        console.log(
+          chalk.blueBright(
+            `signIn: getUser: status code ${JSON.stringify(
+              userResponse.status
+            )} - ${JSON.stringify(userResponse.data)}`
+          )
+        );
         if (userResponse.status === 200) {
           userExists = true;
         }
@@ -115,9 +121,19 @@ const authOptions = {
         };
         try {
           const newUserResponse = await createUser(JSON.stringify(newUser));
-          console.log(chalk.bgGreenBright(`signIn: createUser: status code ${newUserResponse.status} - ${JSON.stringify(newUserResponse.data)}`))
+          console.log(
+            chalk.bgGreenBright(
+              `signIn: createUser: status code ${
+                newUserResponse.status
+              } - ${JSON.stringify(newUserResponse.data)}`
+            )
+          );
         } catch (err) {
-          console.log(chalk.bgRedBright(`signIn createUser: error status: ${err.response.status}`));
+          console.log(
+            chalk.bgRedBright(
+              `signIn createUser: error status: ${err.response.status}`
+            )
+          );
         }
       }
       return true;
@@ -147,13 +163,19 @@ const authOptions = {
           oauthId: profile.sub,
           oauthProvider: account.provider,
           image: profile.picture,
-
-        }
+        };
       }
-      return token
-    }
-  }
+      return token;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
-export { authOptions, handler, handler as GET, handler as POST, handler as PUT, handler as DELETE };
+export {
+  authOptions,
+  handler,
+  handler as GET,
+  handler as POST,
+  handler as PUT,
+  handler as DELETE,
+};
