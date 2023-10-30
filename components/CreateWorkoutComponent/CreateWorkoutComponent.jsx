@@ -1,13 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import CreateExercise from "./CreateExercise";
-import axios from "axios";
+import { createUserWorkout } from "@/app/api/UserService";
+// import axios from "axios";
 
 const defaultValues = {
   dateCreated: new Date().toISOString(),
 };
 
 export default function CreateWorkoutComponent() {
+  const { data: session, status } = useSession();
   // Form hooks
   const {
     control,
@@ -22,28 +25,32 @@ export default function CreateWorkoutComponent() {
   });
 
   // Form submission
-  function onSubmit(data) {
-    data.username = "hardcodedUsername";
-    axios
-      .post("http://localhost:8080/api/workouts/create", data, {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:3000",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const onSubmit = async (data) => {
+    data.oauthId = session.user.oauthId;
+    try {
+      if (session) {
+        const response = await createUserWorkout(
+          session.user.oauthId,
+          session.user.jwt,
+          data
+        );
+        console.log(
+          chalk.blueBright(
+            `CreateWorkoutComponent: onSubmit: status code ${JSON.stringify(
+              response.status
+            )} - ${JSON.stringify(response.data)}`
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log(JSON.stringify({ ...data }, null, 2));
-  }
+  };
 
   return (
-    <div className="flex flex-row justify-center">
+    <div className="flex flex-row justify-center shadow-xl ring-1 ring-slate-500 rounded-lg">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-row justify-between px-7 pt-7">
           <WorkoutNameInputField register={register} />

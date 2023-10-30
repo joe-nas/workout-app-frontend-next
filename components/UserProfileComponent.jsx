@@ -1,40 +1,75 @@
 "use client";
-import { handleSave } from "@/app/profile/page";
+import { updateProfile } from "@/app/api/UserService";
+import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
-const UserProfileComponent = ({ name, image, metric }) => {
+const UserProfileComponent = ({ name, image, metric, email }) => {
+  const { data: session } = useSession();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (updatedData) => {
+    // updateProfile(oauthId, jwt, updatedData);
+    console.log(updatedData);
+  };
+
   return (
-    <form id="user-profile-form" onClick={handleSave}>
-      <div className="flex flex-col form-control w-full max-w-xs">
-        <InputField label="Change Username" placeholder={name} />
-        <InputField label="Change profile Image" placeholder={image} />
+    <div className="flex w-1/3 p-5">
+      <form id="user-profile-form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col">
+          <InputField
+            name="username"
+            label="Username"
+            placeholder={name}
+            register={register}
+            id="username"
+          />
+          <InputField
+            name="image"
+            label="Profile Image"
+            placeholder={image}
+            register={register}
+            id="image"
+          />
+          <InputField
+            name="email"
+            label="Email"
+            placeholder={email}
+            register={register}
+            id="email"
+          />
+          {/* <div className="flex flex-row justify-center m-3">
+            <label className="mr-3">Kg</label>
+            <input type="checkbox" className="toggle" />
+            <label className="ml-3">Lbs</label>
+          </div> */}
 
-        <div className="flex flex-row">
-          <label>Metric: Kg</label>
-          <input type="checkbox" className="toggle" />
-          <label>Lbs</label>
+          {/* Buttons */}
+          <SubmitButton />
         </div>
-
-        {/* Buttons */}
-        <SubmitButton />
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
-const InputField = ({ label, placeholder }) => {
+function InputField({ label, placeholder, register, name }) {
   return (
-    <div>
+    <div key={placeholder?.replace(" ", "-")}>
       <label className="label">
         <span className="label-text">{label}</span>
       </label>
       <input
+        {...register(name)}
         type="text"
         placeholder={placeholder}
         className="input w-full max-w-xs"
       />
     </div>
   );
-};
+}
 
 const SubmitButton = () => {
   return (

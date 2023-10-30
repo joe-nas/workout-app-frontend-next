@@ -4,9 +4,9 @@ import Exercise from "../../components/ExerciseComponent";
 
 const ExercisesPage = () => {
   return (
-    <dic>
+    <div className="">
       <Exercise />
-    </dic>
+    </div>
   );
 };
 

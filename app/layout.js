@@ -13,14 +13,11 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
-
       <body>
         <Provider>
-          <div className="main"></div>
           <main className="app">
             <Navbar />
-            {children}
-            <SignInModalComponent />
+            <div className="flex flex-row justify-center">{children}</div>
             <Footer />
           </main>
         </Provider>

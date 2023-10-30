@@ -2,37 +2,37 @@ import React from "react";
 import exercises from "../data/exercises.json";
 
 const ExerciseComponent = ({ exercise }) => {
-  exercise = exercises[6];
+  exercise = exercises[800];
+  const { name, force, category, equipment, mechanic, instructions } = exercise;
+  const muscleGroups = new Set([
+    ...exercise.primaryMuscles,
+    ...exercise.secondaryMuscles,
+  ]);
 
   return (
-    <div className="indicator">
-      <span className="indicator-item badge badge-primary">
-        {exercise.force}
-      </span>
-      <div className="card bg-secondary text-primary-content">
-        <div className="card-body">
-          <h2 className="card-title">{exercise.name}</h2>
-          <ul>
-            <li className="flex flex-row justify-between">
-              <div>Force: {exercise.force}</div>
-              <div>Primary Muscle: {exercise.primaryMuscles[0]}</div>
-            </li>
-
-            <li className="flex flex-row justify-between">
-              <div>Category: {exercise.category}</div>
-              {exercise.secondaryMuscles.length > 0 ? (
-                <div>Secondary Muscle: {exercise.secondaryMuscles[0]}</div>
-              ) : (
-                <></>
-              )}
-            </li>
-            <li>Level: {exercise.level}</li>
-          </ul>
-          <div className="card-actions justify-end">
-            <button className="btn">Buy Now</button>
-          </div>
-        </div>
+    <div className="w-full max-w-screen-lg flex flex-col p-5 justify-center shadow-xl ring-1 ring-slate-500 rounded-lg">
+      <div className="text-xl">{name}</div>
+      {/* BADGES */}
+      <div>
+        <span className="badge m-1 shadow-md bg-red-300">{force}</span>
+        {equipment && (
+          <span className="badge m-1 shadow-md bg-teal-300">{equipment}</span>
+        )}
+        <span className="badge m-1 shadow-md bg-blue-300">{category}</span>
+        <span className="badge m-1 shadow-md bg-cyan-300">{mechanic}</span>
+        {muscleGroups.size > 0 &&
+          [...muscleGroups].map((muscle, id) => (
+            <span className="badge m-1 shadow-md bg-green-300" key={id}>
+              {muscle}
+            </span>
+          ))}
       </div>
+      <div className="divider">Instructions</div>
+      <ul className="list-decimal m-5">
+        {instructions.map((instruction, id) => (
+          <li key={id}>{instruction}</li>
+        ))}
+      </ul>
     </div>
   );
 };

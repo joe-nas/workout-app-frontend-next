@@ -13,15 +13,12 @@ const Profile = async () => {
     const session = await getServerSession(authOptions);
     const user = await getUser(session.user.oauthId);
 
-    const handleEdit = () => {};
-    const handleDelete = () => {};
-
     return (
       <UserProfileComponent
         name={session.user.name}
         image={session.user.image}
         metric={user.metric}
-        handleSave={handleSave}
+        email={user.email}
       />
     );
   } catch (err) {
@@ -30,9 +27,5 @@ const Profile = async () => {
   }
   return;
 };
-
-export async function handleSave(formData) {
-  console.log(formData);
-}
 
 export default Profile;
