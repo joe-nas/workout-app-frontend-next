@@ -1,6 +1,6 @@
 import React from "react";
 
-const Workouts = ({data}) => {
+const Workouts = ({ data }) => {
 
 
   return (
@@ -8,9 +8,9 @@ const Workouts = ({data}) => {
       <a href="/workouts/create" className="">
         Create Workout
       </a>
-      <div className="grid grid-cols-4 grid-auto-rows-min">
+      <div className="grid md:grid-cols-4 grid-auto-rows-min sm:grid-cols-2 ">
         {data.map((workout) => (
-          <div className="m-4 border rounded-md min-h-0" key={workout.id}>
+          <div className="m-4 border min-h-0 shadow-xl ring-1 ring-slate-500 rounded-lg" key={workout.id}>
             <h2 className="text-center">{workout.workoutName}</h2>
             {workout.exercises.map((exercise) => (
               <div className="" key={exercise.exerciseName}>

@@ -10,7 +10,7 @@ const CreateWorkout = ({ thisIsMySession }) => {
 
 
     const createWorkout = async (e) => {
-        // e.preventDefault()
+        e.preventDefault()
         setSubmitting(true)
 
         try {

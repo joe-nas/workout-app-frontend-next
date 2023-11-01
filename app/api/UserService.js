@@ -38,7 +38,7 @@ export const getUserWorkouts = async (oauthId, jwt) => {
       },
     }
   );
-  return res;
+  return receivedUserWorkouts
 };
 
 export const createUserWorkout = async (oauthId, jwt, workout) => {
