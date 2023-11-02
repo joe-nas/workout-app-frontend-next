@@ -1,0 +1,18 @@
+export default [
+    "Quadriceps",
+    "Calves",
+    "Neck",
+    "Adductors",
+    "Triceps",
+    "Shoulders",
+    "Abdominals",
+    "Forearms",
+    "Chest",
+    "Middle back",
+    "Traps",
+    "Abductors",
+    "Lats",
+    "Hamstrings",
+    "Lower back",
+    "Biceps",
+    "Glutes"]
