@@ -66,3 +66,14 @@ const result = index.search("curl", { enrich: true });
 
 console.log(result[1].result[0]);
 // console.log(index.search("pull", { limit: 5 }));
+
+index.export((key, data) => {
+  // Save each part of the index to a separate file
+  fs.writeFile(`exportedIndex_${key}.json`, JSON.stringify(data), (err) => {
+    if (err) {
+      console.error("Error writing file:", err);
+    } else {
+      console.log(`File exportedIndex_${key}.json written successfully`);
+    }
+  });
+});
