@@ -8,19 +8,19 @@ const ExerciseComponent = ({ exercise }) => {
   ]);
 
   return (
-    <div className="w-full max-w-screen-lg flex flex-col p-5 justify-center backdrop-blur-sm bg-white/30 shadow-md shadow-gray-400 ring-1 ring-slate-700 rounded-lg m-5">
+    <div className="w-full max-w-screen-lg text-slate-50 flex flex-col p-5 justify-center rounded-lg m-5 backdrop-blur-lg bg-secondary/20 shadow-2xl shadow-black">
       <div className="text-xl">{name}</div>
       {/* BADGES */}
       <div>
-        <span className="badge m-1 shadow-sm shadow-slate-700 bg-red-600">{force}</span>
+        <span className="badge badge-primary m-1 shadow-sm">{force}</span>
         {equipment && (
-          <span className="badge m-1 shadow-sm shadow-slate-700 bg-teal-500">{equipment}</span>
+          <span className="badge badge-secondary m-1 shadow-sm">{equipment}</span>
         )}
-        <span className="badge m-1 shadow-sm shadow-slate-700 bg-blue-500">{category}</span>
-        <span className="badge m-1 shadow-sm shadow-slate-700 bg-cyan-500">{mechanic}</span>
+        <span className="badge badge-neutral m-1">{category}</span>
+        <span className="badge badge-success m-1">{mechanic}</span>
         {muscleGroups.size > 0 &&
           [...muscleGroups].map((muscle, id) => (
-            <span className="badge m-1 shadow-sm shadow-slate-700 bg-green-500" key={id}>
+            <span className="badge badge-accent  m-1" key={id}>
               {muscle}
             </span>
           ))}

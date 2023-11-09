@@ -27,13 +27,14 @@ export default function Exercises({ control, register, setValue, getValues }) {
                 onClick={() => {
                   remove(index);
                 }}
-                className="btn btn-danger"
+                className="btn btn-info"
               >
                 Remove Exercise
               </button>
             </div>
-
-            <CreateSet nestIndex={index} {...{ control, register }} />
+            <div className="flex justify-evenly">
+              <CreateSet nestIndex={index} {...{ control, register }} />
+            </div>
           </div>
         );
       })}
@@ -44,7 +45,7 @@ export default function Exercises({ control, register, setValue, getValues }) {
           onClick={() => {
             append({ exerciseName: "" });
           }}
-          className="btn"
+          className="btn btn-primary ml-2"
         >
           Add Exercise
         </button>

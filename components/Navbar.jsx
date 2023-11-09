@@ -22,7 +22,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar shadow-lg shadow-black/40 backdrop-blur-sm text-white font-bold">
       <div className="flex-1">
         <a className="btn btn-ghost normal-case text-xl">Iron Delirium</a>
       </div>
@@ -31,8 +31,8 @@ const Navbar = () => {
           {session?.user ? (
             <li>
               <details>
-                <summary>Workouts</summary>
-                <ul className="p-2 bg-base-100">
+                <summary className="backdrop-blur-3xl shadow-xl shadow-black/70 bg-secondary/80 mr-3">Workouts</summary>
+                <ul className="p-2 text-white">
                   <li>
                     <div
                       onClick={() =>
@@ -58,44 +58,7 @@ const Navbar = () => {
             <></>
           )}
           <li>
-            <Link href="/exercises">Exercises</Link>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2 bg-base-100">
-                {providers &&
-                  Object.values(providers).map((provider) => (
-                    <li key={provider.name}>
-                      <button
-                        type="button"
-                        key={provider.name}
-                        onClick={() => signIn(provider.id)}
-                      >
-                        Sign In
-                      </button>
-                    </li>
-                  ))}
-                <li>
-                  <button
-                    className="btn"
-                    onClick={() =>
-                      document.getElementById("my_modal_2").showModal()
-                    }
-                  >
-                    open modal
-                  </button>
-                </li>
-                <li>
-                  <button type="button" onClick={signOut}>
-                    Logout
-                  </button>
-                </li>
-                <li>
-                  <Link href="/profile">Profile</Link>
-                </li>
-              </ul>
-            </details>
+            <Link className="backdrop-blur-3xl shadow-xl shadow-black/70 bg-primary/50" href="/exercises">Exercises</Link>
           </li>
         </ul>
         <div className="dropdown dropdown-end">
@@ -110,7 +73,7 @@ const Navbar = () => {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 backdrop-blur-3xl shadow-xl shadow-black/70 bg-primary/80 rounded-box w-52"
           >
             <li>
               <div onClick={signOut}>Logout</div>

@@ -15,7 +15,7 @@ export default function CreateSet({ nestIndex, control, register }) {
           <div key={set.id}>
             <div className="join m-2">
               {/* Set Number */}
-              <button className="btn rounded-l-full join-item">
+              <button className="btn btn-primary rounded-l-full join-item">
                 Set {index + 1}
               </button>
 
@@ -27,7 +27,7 @@ export default function CreateSet({ nestIndex, control, register }) {
                 })}
                 type="number"
                 placeholder="Reps"
-                className="input input-bordered join-item"
+                className="input input-bordered join-item w-24"
               />
 
               {/* Weight */}
@@ -38,7 +38,7 @@ export default function CreateSet({ nestIndex, control, register }) {
                 })}
                 type="number"
                 placeholder="Weight"
-                className="input input-bordered bordered join-item"
+                className="input input-bordered bordered join-item w-24"
               />
 
               {/* RPE */}
@@ -50,7 +50,7 @@ export default function CreateSet({ nestIndex, control, register }) {
                 })}
                 type="number"
                 placeholder="RPE"
-                className="input input-bordered bordered join-item"
+                className="input input-bordered bordered join-item w-24"
               />
 
               {/* Done */}
@@ -60,14 +60,14 @@ export default function CreateSet({ nestIndex, control, register }) {
                 })}
                 placeholder="Done"
                 type="checkbox"
-                className="toggle toggle-lg join-item h-12"
+                className="toggle toggle-primary toggle-lg join-item h-12 w-8"
               />
 
               {/* Delete Set */}
               <button
                 type="button"
                 onClick={() => remove(index)}
-                className="btn join-item rounded-r-full"
+                className="btn btn-primary join-item rounded-r-full"
               >
                 Delete
               </button>
@@ -88,11 +88,10 @@ export default function CreateSet({ nestIndex, control, register }) {
             done: "",
           })
         }
-        className="btn mt-2"
+        className="btn btn-primary mb-2 ml-2 justify-left"
       >
         Add Set
       </button>
-      <hr className="py-3" />
     </div>
   );
 }

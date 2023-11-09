@@ -1,16 +1,17 @@
 import React from "react";
+import Link from "next/link";
 
-const Workouts = ({ data }) => {
+const Workouts = ({ data, oauthId }) => {
 
 
   return (
     <div className="">
-      <a href="/workouts/create" className="">
-        Create Workout
-      </a>
-      <div className="grid md:grid-cols-4 grid-auto-rows-min sm:grid-cols-2 ">
+      {/* <button href= className="btn rounded-md ml-4  shadow-xl ring-1 ring-slate-500 rounded-lg"> */}
+      <Link href={`/user/${oauthId}/create`} className="btn btn-primary ml-4 shadow-xl">Create Workout</Link>
+      {/* </button> */}
+      <div className="grid grid-flow-row-dense lg:grid-cols-4 md:grid-cols-3 grid-auto-rows-min sm:grid-cols-2 ">
         {data.map((workout) => (
-          <div className="m-4 border min-h-0 shadow-xl ring-1 ring-slate-500 rounded-lg" key={workout.id}>
+          <div className="m-4 min-h-0 rounded-lg  min-w-min backdrop-blur-lg bg-secondary/20 shadow-2xl shadow-black" key={workout.id}>
             <h2 className="text-center">{workout.workoutName}</h2>
             {workout.exercises.map((exercise) => (
               <div className="" key={exercise.exerciseName}>

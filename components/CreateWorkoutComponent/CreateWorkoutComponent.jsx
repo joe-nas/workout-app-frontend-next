@@ -50,14 +50,13 @@ export default function CreateWorkoutComponent() {
   };
 
   return (
-    <div className="flex flex-row justify-center shadow-xl ring-1 ring-slate-500 rounded-lg">
+    <div className="w-1/4 h-1/2 min-w-max rounded-lg backdrop-blur-lg bg-secondary/20 shadow-2xl shadow-black my-8">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-row justify-between px-7 pt-7">
           <WorkoutNameInputField register={register} />
           <SubmitWorkoutButton />
         </div>
-
-        <div className="border rounded-md m-5">
+        <div className="rounded-md m-5">
           <CreateExercise
             {...{
               control,
@@ -90,7 +89,7 @@ const WorkoutNameInputField = ({ register }) => {
 
 const SubmitWorkoutButton = () => {
   return (
-    <button className="btn" type="submit">
+    <button className="btn btn-primary" type="submit">
       Submit Workout
     </button>
   );
