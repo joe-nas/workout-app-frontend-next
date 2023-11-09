@@ -41,13 +41,6 @@ const UserProfileComponent = ({ name, image, metric, email }) => {
             register={register}
             id="email"
           />
-          {/* <div className="flex flex-row justify-center m-3">
-            <label className="mr-3">Kg</label>
-            <input type="checkbox" className="toggle" />
-            <label className="ml-3">Lbs</label>
-          </div> */}
-
-          {/* Buttons */}
           <SubmitButton />
         </div>
       </form>

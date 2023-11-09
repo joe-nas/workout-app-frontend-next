@@ -1,29 +1,32 @@
-import React from "react";
-import chalk from "chalk";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
+"use client"
 
-import UserProfileComponent from "@/components/UserProfileComponent";
-import { getUser } from "../api/UserService";
+import UserProfileComponent from '@/components/UserProfileComponent';
+import { getUser } from '../api/UserService';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
-const Profile = async () => {
-  try {
-    const session = await getServerSession(authOptions);
-    const user = await getUser(session.user.oauthId);
+const UserProfile = () => {
+  const { data: session } = useSession();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    return (
-      <UserProfileComponent
-        name={session.user.name}
-        image={session.user.image}
-        metric={user.metric}
-        email={user.email}
-      />
-    );
-  } catch (err) {
-    // throw new Error(chalk.red("Error in Profile.jsx: "))
-    console.log(chalk.red("Error in Profile.jsx: "), err);
-  }
-  return;
+  useEffect(() => {
+    setUser(getUser(session?.user.oauthId)); // Adjust this to be server-compatible
+    setLoading(false);
+  }, [session]);
+
+  return (
+    <div>
+      {loading
+        ? <div>Loading...</div>
+        : <UserProfileComponent
+          name={session.user.name}
+          image={session.user.image}
+          metric={user.metric}
+          email={user.email}
+        />}
+    </div >
+  );
 };
 
-export default Profile;
+export default UserProfile;
