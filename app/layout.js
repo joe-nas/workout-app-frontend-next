@@ -12,12 +12,16 @@ export const metadata = {
 
 const RootLayout = ({ children }) => {
   return (
-    <html lang="en">
-      <body>
+    // <html className="h-72 bg-gradient-radial bg-gradient-to-r from-black via-slate-95000 to-gray-800" lang="en">
+    <html className="h-72" lang="en">
+
+      <body style={{ backgroundImage: `url('bg7.webp')`, backgroundSize: "cover", backgroundAttachment: "fixed", backgroundPosition: "center", minHeight: "100vh" }}>
         <Provider>
           <main className="app">
             <Navbar />
-            <div className="flex flex-row justify-center">{children}</div>
+            <div className="flex flex-row justify-center min-h-screen">
+              {children}
+            </div>
             <Footer />
           </main>
         </Provider>

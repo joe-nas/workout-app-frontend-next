@@ -31,7 +31,7 @@ const ShowWorkouts = ({ workouts }) => {
 
     if (isLoading) return <div>Loading...</div>
     if (!data) return <div>Not found</div>
-    if (data) return <Workouts data={data} />
+    if (data) return <Workouts data={data} oauthId={session.user.oauthId} />
     // if (data) return (
     //     <>
     //         {JSON.stringify(data)}
