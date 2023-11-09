@@ -1,4 +1,6 @@
+import WelcomeComponent from "@/components/WelcomeComponent";
 import React from "react";
+
 
 const metadata = {
   title: "Iron Delirium",
@@ -7,11 +9,9 @@ const metadata = {
 
 const Home = () => {
   return (
-    <div className="adjust-center"></div>
-    // <section className="w-full flex-center flex-col">
-    //   <h1 className="text-center">Create, track and edit your Workouts</h1>
-    //   <h2>Landing page</h2>
-    // </section>
+    <div className="adjust-center">
+      <WelcomeComponent />
+    </div >
   );
 };
 
