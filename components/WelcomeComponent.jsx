@@ -135,7 +135,7 @@ const Quote = ({ quotes }) => {
             <div className='text-4xl font-bold'>What Satisfied Users (not Chat-GPT) Say About Iron Delirium</div>
             {isLoading && <span className="loading loading-spinner text-primary py-8"></span>}
             {!isLoading && quote.map((q, i) => (
-                <div className='text-primary text-xl font-bold p-3 italic' key={i}>"{q}"</div>
+                <div className='text-primary text-xl font-bold p-3 italic' key={i}>{q}</div>
             ))}
         </div>
     )

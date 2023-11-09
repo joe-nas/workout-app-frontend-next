@@ -1,5 +1,3 @@
-"use server";
-
 import React from "react";
 import chalk from "chalk";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";

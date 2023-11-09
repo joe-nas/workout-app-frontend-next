@@ -5,7 +5,6 @@ import ExerciseComponent from './ExerciseComponent'
 
 
 
-
 const SearchComponent = (props) => {
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setSearchResults] = useState([])
@@ -41,7 +40,7 @@ const SearchComponent = (props) => {
 
             <ul>
                 {searchResults.map((doc, index) => (
-                    doc.score < 0.4 && <ExerciseComponent exercise={doc.item} />
+                    doc.score < 0.4 && <ExerciseComponent key={index} exercise={doc.item} />
                 ))}
             </ul>
 
