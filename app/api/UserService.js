@@ -3,7 +3,7 @@ import { apiClient } from "./ApiClient";
 
 export const getUser = async (oauthId) => {
   const res = await apiClient.get(`/api/user/${oauthId}`);
-  return res;
+  return res.data;
 };
 
 export const createUser = async (user) => {
@@ -15,8 +15,7 @@ export const createUser = async (user) => {
 
 export const updateProfile = async (oauthId, jwt, user) => {
   const updatedProfile = await apiClient.put(
-    `/api/user/${oauthId}`,
-    jwt,
+    `/api/user/${oauthId}/profile`,
     user,
     {
       headers: {
@@ -25,7 +24,7 @@ export const updateProfile = async (oauthId, jwt, user) => {
       },
     }
   );
-  return res;
+  return updatedProfile;
 };
 
 export const getUserWorkouts = async (oauthId, jwt) => {
