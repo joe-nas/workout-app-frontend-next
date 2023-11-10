@@ -3,7 +3,7 @@ import { apiClient } from "./ApiClient";
 
 export const getUser = async (oauthId) => {
   const res = await apiClient.get(`/api/user/${oauthId}`);
-  return res.data;
+  return res;
 };
 
 export const createUser = async (user) => {
