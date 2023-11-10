@@ -1,9 +1,11 @@
+"use client"
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import CreateExercise from "./CreateExercise";
 import { createUserWorkout } from "@/app/api/UserService";
-// import axios from "axios";
+import { useRouter } from 'next/navigation'
+
 
 const defaultValues = {
   dateCreated: new Date().toISOString(),
@@ -11,6 +13,7 @@ const defaultValues = {
 
 export default function CreateWorkoutComponent() {
   const { data: session, status } = useSession();
+  const router = useRouter();
   // Form hooks
   const {
     control,
@@ -34,6 +37,7 @@ export default function CreateWorkoutComponent() {
           session.user.jwt,
           data
         );
+        router.push(`/user/${session?.user.oauthId}/workouts`)
         console.log(
           chalk.blueBright(
             `CreateWorkoutComponent: onSubmit: status code ${JSON.stringify(
