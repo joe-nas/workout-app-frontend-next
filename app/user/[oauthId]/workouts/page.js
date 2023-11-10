@@ -5,9 +5,6 @@ import { useSession } from "next-auth/react";
 import Workouts from '@/components/Workouts';
 import { getUserWorkouts } from '@/app/api/UserService';
 
-// import workoutData from '@/workout';
-import { get } from 'react-hook-form';
-
 const ShowWorkouts = ({ workouts }) => {
     const { data: session } = useSession();
 
@@ -32,11 +29,7 @@ const ShowWorkouts = ({ workouts }) => {
     if (isLoading) return <div>Loading...</div>
     if (!data) return <div>Not found</div>
     if (data) return <Workouts data={data} oauthId={session.user.oauthId} />
-    // if (data) return (
-    //     <>
-    //         {JSON.stringify(data)}
-    //     </>
-    // )
+
 }
 
 
