@@ -26,7 +26,7 @@ const UserProfileComponent = ({ username, email }) => {
   }
 
   return (
-    <div className="flex mt-8 p-5 shadow-2xl shadow-black backdrop-opacity-90 bg-white/50 backdrop-blur-md rounded-lg">
+    <div className="flex mt-8 p-5 shadow-2xl shadow-black backdrop-opacity-90 bg-white/80 backdrop-blur-md rounded-lg">
       <form id="user-profile-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
           <InputField
@@ -65,9 +65,9 @@ const UserProfileComponent = ({ username, email }) => {
 
 function InputField({ label, placeholder, register, name, validation, errors }) {
   return (
-    <div key={placeholder?.replace(" ", "-")}>
+    <div key={placeholder?.replace(" ", "-")} >
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="label-text text-black">{label}</span>
       </label>
       <input
         {...register(name, { ...validation })}
