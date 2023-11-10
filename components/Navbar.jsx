@@ -75,20 +75,27 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 backdrop-blur-3xl shadow-xl shadow-black/70 bg-primary/80 rounded-box w-52"
           >
-            <li>
-              <div onClick={() => {
-                signOut({ callbackUrl: '/' })
-              }}>Logout</div>
-            </li>
-            <li>
-              <div onClick={signIn}>SignIn</div>
-            </li>
-            <li>
-              <Link href={`/user/${session?.user.oauthId}/profile`} className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </Link>
-            </li>
+            {session?.user &&
+              <li>
+                <div onClick={() => {
+                  signOut({ callbackUrl: '/' })
+                }}>Logout</div>
+              </li>
+            }
+            {!session?.user &&
+              <li>
+                <div onClick={signIn}>SignIn</div>
+              </li>
+            }
+
+            {session?.user &&
+              <li>
+                <Link href={`/user/${session?.user.oauthId}/profile`} className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </Link>
+              </li>
+            }
           </ul>
         </div>
       </div>
