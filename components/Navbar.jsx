@@ -65,7 +65,7 @@ const Navbar = () => {
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
               {session?.user.image ? (
-                <Image src={session?.user.image} width={30} height={30} />
+                <Image src={session?.user.image} width={30} height={30} alt="User Avatar" />
               ) : (
                 <FaDumbbell className="align-middle" size={40} />
               )}
@@ -76,13 +76,15 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 backdrop-blur-3xl shadow-xl shadow-black/70 bg-primary/80 rounded-box w-52"
           >
             <li>
-              <div onClick={signOut}>Logout</div>
+              <div onClick={() => {
+                signOut({ callbackUrl: '/' })
+              }}>Logout</div>
             </li>
             <li>
               <div onClick={signIn}>SignIn</div>
             </li>
             <li>
-              <Link href="/profile" className="justify-between">
+              <Link href={`/user/${session?.user.oauthId}/profile`} className="justify-between">
                 Profile
                 <span className="badge">New</span>
               </Link>
@@ -90,7 +92,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
