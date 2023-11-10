@@ -15,7 +15,7 @@ const UserProfile = () => {
       if (session?.user.oauthId) {
         try {
           const currentUser = await getUser(session.user.oauthId);
-          setUser(currentUser); // Adjust this to be server-compatible
+          setUser(currentUser.data); // Adjust this to be server-compatible
           setLoading(false);
         } catch (e) {
           setLoading(true);
