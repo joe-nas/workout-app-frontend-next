@@ -15,7 +15,7 @@ const RootLayout = ({ children }) => {
     // <html className="h-72 bg-gradient-radial bg-gradient-to-r from-black via-slate-95000 to-gray-800" lang="en">
     <html className="h-72" lang="en">
 
-      <body style={{ backgroundImage: `url('bg7.webp')`, backgroundSize: "cover", backgroundAttachment: "fixed", backgroundPosition: "center", minHeight: "100vh" }}>
+      <body style={{ backgroundImage: `url('/bg7.webp')`, backgroundSize: "cover", backgroundAttachment: "fixed", backgroundPosition: "center", minHeight: "100vh" }}>
         <Provider>
           <main className="app">
             <Navbar />
