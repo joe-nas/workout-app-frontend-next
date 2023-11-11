@@ -1,14 +1,32 @@
 import { headers } from "@/next.config";
 import { apiClient } from "./ApiClient";
 
-export const getUser = async (oauthId) => {
-  const res = await apiClient.get(`/api/user/${oauthId}`);
+export const getUser = async (oauthId, jwt) => {
+  const res = await apiClient.get(`/api/user/${oauthId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
   return res;
 };
 
-export const createUser = async (user) => {
+
+export const deleteWorkout = async (oauthId, jwt, workoutId) => {
+  const res = await apiClient.delete(`/api/workouts/delete/${workoutId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return res;
+}
+
+export const createUser = async (user, jwt) => {
   const createdUser = await apiClient.post("/api/user", user, {
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      "Content-Type": "application/json",
+    },
   });
   return res;
 };
@@ -33,7 +51,7 @@ export const getUserWorkouts = async (oauthId, jwt) => {
     {
       headers: {
         Authorization: `Bearer ${jwt}`,
-        "Access-Control-Allow-Origin": "http://localhost:3000",
+        "Content-Type": "application/json",
       },
     }
   );
@@ -47,7 +65,6 @@ export const createUserWorkout = async (oauthId, jwt, workout) => {
     {
       headers: {
         Authorization: `Bearer ${jwt}`,
-        "Access-Control-Allow-Origin": "http://localhost:3000",
         "Content-Type": "application/json",
       },
     }
