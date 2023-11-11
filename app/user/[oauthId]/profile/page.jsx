@@ -14,7 +14,7 @@ const UserProfile = () => {
     const setUpUser = async () => {
       if (session?.user.oauthId) {
         try {
-          const currentUser = await getUser(session.user.oauthId);
+          const currentUser = await getUser(session.user.oauthId, session.user.jwt);
           setUser(currentUser.data); // Adjust this to be server-compatible
           setLoading(false);
         } catch (e) {

@@ -45,7 +45,7 @@ const authOptions = {
     async session({ session, token }) {
       // get user data from database
       try {
-        const sessionUser = await getUser(token.oauthId);
+        const sessionUser = await getUser(token.oauthId, token.jwt);
         console.log(JSON.stringify(token));
         // console.log(chalk.bgGreenBright("Session User:", JSON.stringify(sessionUser)))
         if (sessionUser) {
@@ -123,8 +123,7 @@ const authOptions = {
           const newUserResponse = await createUser(JSON.stringify(newUser));
           console.log(
             chalk.bgGreenBright(
-              `signIn: createUser: status code ${
-                newUserResponse.status
+              `signIn: createUser: status code ${newUserResponse.status
               } - ${JSON.stringify(newUserResponse.data)}`
             )
           );
