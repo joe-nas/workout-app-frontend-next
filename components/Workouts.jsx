@@ -2,12 +2,11 @@
 import React from "react";
 import Link from "next/link";
 import { deleteWorkout, getUserWorkouts } from "@/app/api/UserService";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { set } from "lodash";
 
 const Workouts = () => {
-  const router = useRouter();
   const { data: session } = useSession();
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -41,9 +40,9 @@ const Workouts = () => {
 
   const deleteAndReload = async (oauthId, jwt, id) => {
     try {
-      console.log(`id: ${id}, jwt: ${jwt}, oauthId: ${oauthId}`)
       await deleteWorkout(oauthId, jwt, id);
-      router.refresh();
+      const refreshData = await getUserWorkouts(oauthId, jwt)
+      setData(refreshData)
     } catch (e) {
       console.log(e)
     };
