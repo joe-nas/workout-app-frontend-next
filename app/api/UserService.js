@@ -45,18 +45,41 @@ export const updateProfile = async (oauthId, jwt, user) => {
   return updatedProfile;
 };
 
+// export const getUserWorkouts = async (oauthId, jwt) => {
+//   const receivedUserWorkouts = await apiClient.get(
+//     `/api/user/${oauthId}/workouts`,
+//     {
+//       headers: {
+//         Authorization: `Bearer ${jwt}`,
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   );
+//   return receivedUserWorkouts
+// };
+
+
+
 export const getUserWorkouts = async (oauthId, jwt) => {
-  const receivedUserWorkouts = await apiClient.get(
-    `/api/user/${oauthId}/workouts`,
+  const receivedUserWorkouts = await fetch(
+    `http://localhost:8080/api/user/${oauthId}/workouts`,
     {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${jwt}`,
         "Content-Type": "application/json",
+        Origin: "http://localhost:3000",
       },
+      next: {
+        tags: ['workouts']
+      },
+      cache: 'no-store'
     }
   );
-  return receivedUserWorkouts
+  const json = await receivedUserWorkouts.json();
+  return json;
 };
+
 
 export const createUserWorkout = async (oauthId, jwt, workout) => {
   const createdUserWorkout = await apiClient.post(
@@ -70,3 +93,14 @@ export const createUserWorkout = async (oauthId, jwt, workout) => {
     }
   );
 };
+
+
+export const getStats = async (jwt) => {
+  await fetch("http://localhost:8080/api/stats", {
+    headers: {
+      "Content-Type": "application/json",
+      Origin: "http://localhost:3000",
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+}
