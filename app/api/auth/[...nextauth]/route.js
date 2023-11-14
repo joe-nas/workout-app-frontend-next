@@ -1,7 +1,9 @@
 import chalk from "chalk";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
 import { getUser, createUser } from "../../UserService";
+import jwt from "jsonwebtoken";
 
 /**
  * This file contains the NextAuth configuration for authentication providers, callbacks and JWT generation.
@@ -27,10 +29,11 @@ const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       scope: ["https://www.googleapis.com/auth/userinfo.profile"],
     }),
-    // GithubProvider({
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_SECRET,
-    // }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+      // scope: 'read:user'
+    }),
   ],
   callbacks: {
     /**
@@ -88,11 +91,33 @@ const authOptions = {
      * @returns {boolean} - Returns true if the user is signed in.
      */
     async signIn({ account, profile, user, credentials }) {
-      const oauthId = profile.sub;
+      const oauthId = account.providerAccountId;
       const username = profile.name.replace(" ", "");
       const email = profile.email;
+      const provider = account.provider;
 
       var userExists = false;
+
+
+      // console.log(chalk.bgGreenBright("signIn: account:", JSON.stringify(account)));
+      // console.log(chalk.bgGreenBright("signIn: profile:", JSON.stringify(profile)));
+      // console.log(chalk.bgGreenBright("signIn: user:", JSON.stringify(user)));
+      if (provider === "github") {
+        const newUser = {
+          email: email,
+          username: username,
+          oauthId: oauthId,
+          provider: provider,
+        };
+
+        const options = {
+          expiresIn: "1h",
+        }
+
+        const token = jwt.sign(newUser, process.env.GITHUB_SECRET, options);
+        console.log(chalk.bgGreenBright("signIn: token:", JSON.stringify(token)));
+      }
+
 
       try {
         const userResponse = await getUser(profile.sub);
@@ -118,6 +143,10 @@ const authOptions = {
           email: email,
           username: username,
           oauthId: oauthId,
+          oauthDetails: {
+            oauthProvider: provider,
+            oauthId: oauthId,
+          },
         };
         try {
           const newUserResponse = await createUser(JSON.stringify(newUser));
@@ -155,13 +184,29 @@ const authOptions = {
      * @returns {string} image - The URL of the user's profile picture.
      */
     async jwt({ token, user, account, session, profile }) {
-      if (user) {
+      // console.log(chalk.bgGreenBright("signIn: account:", JSON.stringify(account)));
+      // console.log(chalk.bgBlueBright("signIn: profile:", JSON.stringify(profile)));
+      // console.log(chalk.bgRedBright("signIn: user:", JSON.stringify(user)));
+      // console.log(chalk.bgYellowBright("signIn: token:", JSON.stringify(token)));
+      // console.log(chalk.magentaBrightBright("signIn: session:", JSON.stringify(session)));
+
+
+      if (account && account.provider === "google" && user) {
         return {
           ...token,
           jwt: account.id_token,
-          oauthId: profile.sub,
+          oauthId: account.providerAccountId,
           oauthProvider: account.provider,
           image: profile.picture,
+        };
+      }
+      if (account && account.provider === "github" && user) {
+        return {
+          ...token,
+          // jwt: account.id_token,
+          oauthId: account.providerAccountId,
+          oauthProvider: account.provider,
+          image: profile.avatar_url,
         };
       }
       return token;
