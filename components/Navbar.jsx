@@ -7,7 +7,7 @@ import Image from "next/image";
 import { FaDumbbell } from "react-icons/fa";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [providers, setProviders] = useState(null);
   const router = useRouter();
 
@@ -20,6 +20,15 @@ const Navbar = () => {
 
     setUpProviders();
   }, []);
+
+
+  useEffect(() => {
+    if (status === 'authenticated' && !session) {
+      signOut();
+    }
+  }, [session, status]);
+
+  console.log(session?.accessToken);
 
   return (
     <div className="navbar shadow-lg shadow-black/40 backdrop-blur-sm text-white font-bold">

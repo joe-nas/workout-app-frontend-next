@@ -1,12 +1,11 @@
 "use client"
 import { exerciseDbStats } from '@/app/api/exerciseDbStatsService'
-import primaryMuscles from '@/data/primary-muscles';
 import React, { useEffect } from 'react'
-import _, { debounce, set } from 'lodash'
-import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 import { GiWeightLiftingUp, GiWeight } from 'react-icons/gi';
 import { FaRepeat } from 'react-icons/fa6'
+import _ from 'lodash'
 import Image from 'next/image';
+import { Fade } from 'react-awesome-reveal'
 
 const quotes = [
     "Since using Iron Delirium, I accidentally bent my car door handle. It was just supposed to be cardio day!",
@@ -54,12 +53,17 @@ const WelcomeComponent = () => {
 
     return (
 
-        <div className="flex flex-col items-center justify-center">
-            <div className='mb-32 mt-12'>
+        <div className="flex flex-col items-left ">
+            <div className='mb-32 mt-12 justify-center shadow-xl shadow-primary/50 bg-primary/90 backdrop-blur-md p-5 rounded-md'>
                 <h1 className="text-4xl font-bold text-center text-white">Welcome to Iron Delirium</h1>
                 <h2 className="text-xl text-center text-white">The Workout Tracker for the Heavy Iron Addict</h2>
                 <h3 className='"text-lg text-center text-white"'>Be the King Of the App - Be the Only User!</h3>
             </div>
+
+
+
+
+
             <div className='flex flex-row gap-6'>
                 <StatBadge title="#Users Online" icon={<GiWeightLiftingUp />} value={numUsers} desc="69% more than last time" />
                 <StatBadge title="#KG Lifted" icon="" value={numWeight} desc="Avg 145Kg per/rep" />
@@ -68,38 +72,31 @@ const WelcomeComponent = () => {
                 <StatBadge title="#Reps completed" icon={<FaRepeat />} value={numReps} desc="∞ Reps remaining" />
             </div>
 
-            <div className="carousel rounded-box w-1/2">
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/darthvader_before.webp" alt="Drink" />
+            <Fade className="rounded-box">
+                <div className='flex flex-row py-32'>
+                    <img src="/darthvader_before.webp" alt="Darth Vader Before" style={{ width: '30%', height: 'auto' }} />
+                    <img src="/darthvader_after.webp" alt="Darth Vader After" style={{ width: '30%', height: 'auto' }} />
+                    {/* <div>{getRandomQuote(quotes, 1)}</div> */}
                 </div>
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/darthvader_after.webp" alt="Drink" />
+                <div className='flex flex-row py-32'>
+                    <img src="/harold_before.webp" alt="Harold Before" style={{ width: '30%', height: 'auto' }} />
+                    <img src="/harold_after.webp" alt="Harold After" style={{ width: '30%', height: 'auto' }} />
                 </div>
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/harold_before.webp" alt="Drink" />
-                </div>
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/harold_after.webp" alt="Drink" />
-                </div>
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/stallone_before.webp" alt="Drink" />
-                </div>
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/stallone_after.webp" alt="Drink" />
-                </div>
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/steveb_before.webp" alt="Drink" />
-                </div>
-                <div className="carousel-item">
-                    <Image width={512 / 3} height={768 / 3} src="/steveb_after2.webp" alt="Drink" />
-                </div>
-            </div>
+                <div className='flex flex-row py-32'>
+                    <img src="/stallone_before.webp" alt="Stallone Before" style={{ width: '30%', height: 'auto' }} />
+                    <img src="/stallone_after.webp" alt="Stallone After" style={{ width: '30%', height: 'auto' }} />
+                </div >
+                <div className='flex flex-row py-32'>
+                    <img src="/steveb_before.webp" alt="Steve Before" style={{ width: '30%', height: 'auto' }} />
+                    <img src="/steveb_after2.webp" alt="Steve After" style={{ width: '30%', height: 'auto' }} />
+                </div >
+            </Fade >
 
 
             <div className='flex flex-row gap-6 pt-6'>
                 <Quote quotes={quotes} />
             </div>
-        </div>
+        </div >
 
     )
 }
