@@ -19,7 +19,6 @@ const Workouts = () => {
       try {
         if (session?.user.jwt) {
           const userWorkouts = await getUserWorkouts(session.user.oauthId, session.user.jwt)
-          // setData(userWorkouts.data)
           setData(userWorkouts)
           setJwt(session.user.jwt)
           setOauthId(session.user.oauthId)

@@ -45,20 +45,6 @@ export const updateProfile = async (oauthId, jwt, user) => {
   return updatedProfile;
 };
 
-// export const getUserWorkouts = async (oauthId, jwt) => {
-//   const receivedUserWorkouts = await apiClient.get(
-//     `/api/user/${oauthId}/workouts`,
-//     {
-//       headers: {
-//         Authorization: `Bearer ${jwt}`,
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   );
-//   return receivedUserWorkouts
-// };
-
-
 
 export const getUserWorkouts = async (oauthId, jwt) => {
   const receivedUserWorkouts = await fetch(
