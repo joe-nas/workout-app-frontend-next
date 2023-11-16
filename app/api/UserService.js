@@ -11,6 +11,9 @@ export const getUser = async (oauthId, jwt) => {
 };
 
 
+
+
+
 export const deleteWorkout = async (oauthId, jwt, workoutId) => {
   const res = await apiClient.delete(`/api/workouts/delete/${workoutId}`, {
     headers: {
