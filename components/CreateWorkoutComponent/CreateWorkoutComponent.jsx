@@ -29,12 +29,13 @@ export default function CreateWorkoutComponent() {
 
   // Form submission
   const onSubmit = async (data) => {
+    console.log("CreateWorkoutComponent: onSubmit: session.user.jwt", session.jwt);
     data.oauthId = session.user.oauthId;
     try {
       if (session) {
         const response = await createUserWorkout(
           session.user.oauthId,
-          session.user.jwt,
+          session.jwt,
           data
         );
         router.push(`/user/${session?.user.oauthId}/workouts`)

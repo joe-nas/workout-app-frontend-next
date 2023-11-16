@@ -99,30 +99,3 @@ const Workouts = () => {
 }
 
 export default Workouts;
-
-
-// const DeleteWorkoutButton = ({ id, jwt, oauthId }) => {
-//   const router = useRouter()
-
-//   const deleteAndReload = async () => {
-//     try {
-//       console.log(`id: ${id}, jwt: ${jwt}, oauthId: ${oauthId}`)
-//       await deleteWorkout(oauthId, jwt, id);
-//       router.refresh();
-//     } catch (e) {
-//       console.log(e)
-//     };
-//   }
-
-//   return (
-//     <div className="flex justify-center">
-//       <button className="btn btn-primary" onClick={deleteAndReload}
-//       >
-//         Delete Workout</button>
-//     </div>
-//   )
-// }
-
-
-
-

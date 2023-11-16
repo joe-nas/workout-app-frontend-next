@@ -1,1 +1,97 @@
+Github
+signIn: account: {
+    "provider": "github",
+    "type": "oauth",
+    "providerAccountId": "4353093",
+    "access_token": "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",
+    "token_type": "bearer",
+    "scope": "read:user,user:email"
+}
+signIn: profile: {
+    "login": "joe-nas",
+    "id": 4353093,
+    "node_id": "MDQ6VXNlcjQzNTMwOTM=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/4353093?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/joe-nas",
+    "html_url": "https://github.com/joe-nas",
+    "followers_url": "https://api.github.com/users/joe-nas/followers",
+    "following_url": "https://api.github.com/users/joe-nas/following{/other_user}",
+    "gists_url": "https://api.github.com/users/joe-nas/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/joe-nas/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/joe-nas/subscriptions",
+    "organizations_url": "https://api.github.com/users/joe-nas/orgs",
+    "repos_url": "https://api.github.com/users/joe-nas/repos",
+    "events_url": "https://api.github.com/users/joe-nas/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/joe-nas/received_events",
+    "type": "User",
+    "site_admin": false,
+    "name": "Jonas Falck",
+    "company": null,
+    "blog": "",
+    "location": "Nijmegen",
+    "email": "pintac1984@gmail.com",
+    "hireable": true,
+    "bio": null,
+    "twitter_username": null,
+    "public_repos": 35,
+    "public_gists": 0,
+    "followers": 2,
+    "following": 3,
+    "created_at": "2013-05-06T09:36:39Z",
+    "updated_at": "2023-11-08T14:29:40Z",
+    "private_gists": 0,
+    "total_private_repos": 20,
+    "owned_private_repos": 20,
+    "disk_usage": 582485,
+    "collaborators": 1,
+    "two_factor_authentication": false,
+    "plan": {
+        "name": "free",
+        "space": 976562499,
+        "collaborators": 0,
+        "private_repos": 10000
+    }
+}         
+signIn: user: {
+    "id": "4353093",
+    "name": "Jonas Falck",
+    "email": "pintac1984@gmail.com",
+    "image": "https://avatars.githubusercontent.com/u/4353093?v=4"
+}
 
+
+
+Google
+signIn: account: {
+    "provider": "google",
+    "type": "oauth",
+    "providerAccountId": "115400689429394960655",
+    "access_token": "ya29.a0AfB_byDd06PpNVqX-zSj0DPIS7LXJaHUcFUm1DKDoVEKyK2YG4Rzd5fDl1A7gesp6nRfUDLl5_CYbw3R02SofaJRPwouAfat-sHMcn4whL4YJnEVN64fkpTboKmXYB1CO6uLRNYEn7wOmeNL9qhDpO_96fj_vnQVvnI5aCgYKAbESARISFQHGX2Mi2EV_gogyBU4VKlDjyGzxbA0171",
+    "expires_at": 1699894573,
+    "scope": "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid",
+    "token_type": "Bearer",
+    "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY4MzNlOGE3ZmUzZmU0Yjg3ODk0ODIxOWExNjg0YWZhMzczY2E4NmYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxNjc4MTkyOTg3NDItbWRwNjR2MGc3dW12cTZubmE3dDU2cjVjcHRmdDFtODkuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIxNjc4MTkyOTg3NDItbWRwNjR2MGc3dW12cTZubmE3dDU2cjVjcHRmdDFtODkuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTU0MDA2ODk0MjkzOTQ5NjA2NTUiLCJlbWFpbCI6InBpbnRhYzE5ODRAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiI3QjhFTTFVM242dlkzdTVWX1JDaXh3IiwibmFtZSI6IkpvIEYiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jS3FHeGlWV0VzcGhGTUdmZmYtMmVkTzRSTl9NVUo3a2NZc19FUnRGTVFQUXc9czk2LWMiLCJnaXZlbl9uYW1lIjoiSm8iLCJmYW1pbHlfbmFtZSI6IkYiLCJsb2NhbGUiOiJlbi1HQiIsImlhdCI6MTY5OTg5MDk3NCwiZXhwIjoxNjk5ODk0NTc0fQ.mRdCYxf9MRiSvMRrrfE_j8MN1Ey2x7BQhaxyYLo0NbaZRAQp6Pxo4oUp_Q88X5E66gvotcaTn3AofQQdT0jPAIRFns38Vi4sPjLZfZnPA1k9GQmo5IjAScTFhgJWlDFZGRqxO1t1_iHQ__omPMsTJnGBKth_yrYxb0_PrebrR3vnc651rd8JQt-gX6WA7YHiSUXllCYLYcyJhzLXwR_Z_Spe4DlCp-s8ifVvdS80joyZqD_huhl2BBla9SruV7C1jFTFHyaZpmEQqRY7tufHg_bs8htIlzWuvn40h06W3niAJmXNPqA2AND6rcmsx6SmXfoWIwIDSyBIeW9UoNx_1Q"
+}                                                            
+signIn: profile: {
+    "iss": "https://accounts.google.com",
+    "azp": "167819298742-mdp64v0g7umvq6nna7t56r5cptft1m89.apps.googleusercontent.com",
+    "aud": "167819298742-mdp64v0g7umvq6nna7t56r5cptft1m89.apps.googleusercontent.com",
+    "sub": "115400689429394960655",
+    "email": "pintac1984@gmail.com",
+    "email_verified": true,
+    "at_hash": "7B8EM1U3n6vY3u5V_RCixw",
+    "name": "Jo F",
+    "picture": "https://lh3.googleusercontent.com/a/ACg8ocKqGxiVWEsphFMGfff-2edO4RN_MUJ7kcYs_ERtFMQPQw=s96-c",
+    "given_name": "Jo",
+    "family_name": "F",
+    "locale": "en-GB",
+    "iat": 1699890974,
+    "exp": 1699894574
+}                              
+signIn: user: {
+    "id": "115400689429394960655",
+    "name": "Jo F",
+    "email": "pintac1984@gmail.com",
+    "image": "https://lh3.googleusercontent.com/a/ACg8ocKqGxiVWEsphFMGfff-2edO4RN_MUJ7kcYs_ERtFMQPQw=s96-c"
+}

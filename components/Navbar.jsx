@@ -28,8 +28,7 @@ const Navbar = () => {
     }
   }, [session, status]);
 
-  console.log(session?.accessToken);
-
+  console.log("🦆🦆🦆 Navbar: session", session);
   return (
     <div className="navbar shadow-lg shadow-black/40 backdrop-blur-sm text-white font-bold">
       <div className="flex-1">

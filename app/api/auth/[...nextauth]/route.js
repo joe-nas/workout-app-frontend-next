@@ -22,6 +22,11 @@ import jwt from "jsonwebtoken";
  * @returns {Object} - The NextAuth handler function.
  */
 
+
+// const secretKey = Buffer.from(process.env.IRONDELIRIUM_SECRET, 'base64')
+const secretKey = process.env.IRONDELIRIUM_SECRET
+const signInOption = { expiresIn: '5000', algorithm: 'HS256' }
+const sessionOption = { expiresIn: '1h', algorithm: 'HS256' }
 const authOptions = {
   providers: [
     GoogleProvider({
@@ -45,38 +50,44 @@ const authOptions = {
      * @param {Object} options.token - The token object containing user data.
      * @returns {Object} - The updated session object.
      */
-    async session({ session, token }) {
-      // get user data from database
+    async session({ session, user, token }) {
+      console.log(chalk.bgGreenBright("🐔🐔🐔 Session 1:", JSON.stringify(session)));
       try {
-        const sessionUser = await getUser(token.oauthId, token.jwt);
-        console.log(JSON.stringify(token));
-        // console.log(chalk.bgGreenBright("Session User:", JSON.stringify(sessionUser)))
-        if (sessionUser) {
+        console.log(chalk.bgGreenBright("👽👽👽 Session 2: ", JSON.stringify(token.jwt)))
+
+        // move to UserService.js
+        const sessionUser = await fetch(`http://localhost:8080/api/user/${token.sub}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token.jwt}`,
+            "Content-Type": "application/json",
+            Origin: "http://localhost:3000",
+          }
+        })
+        const sessionUserData = await sessionUser.json()
+
+        console.log(chalk.bgGreenBright("🦝🦝🦝 Session 3 User:", JSON.stringify(sessionUserData)))
+        if (sessionUser.ok) {
           console.log(
             chalk.bgGreenBright(
-              `session: getUser: status code ${JSON.stringify(
-                sessionUser.status
-              )} - ${JSON.stringify(sessionUser.data)}`
+              `🐆🐆🐆 Session 4: getUser: status code ${sessionUser.status} - ${(JSON.stringify(sessionUserData))}`
             )
           );
           return {
             ...session,
+            jwt: token.jwt,
             user: {
               ...session.user,
-              mongoId: sessionUser.userID,
-              jwt: token.jwt,
-              oauthId: token.oauthId,
-              provider: token.oauthProvider,
-              image: token.picture,
+              mongoId: sessionUserData.id,
+              oauthId: sessionUserData.oauthId,
+              provider: sessionUserData.oauthDetails.oauthProvider,
+              // image: token.picture,
             },
           };
         }
       } catch (err) {
-        err.status === 404
-          ? console.log(chalk.bgRedBright("User not found"))
-          : console.log(chalk.bgRedBright(err.status));
+        console.log(chalk.bgRedBright("session: ", err));
       }
-      console.log(chalk.bgRedBright("Session User not found"));
       return session;
     },
     /**
@@ -90,66 +101,57 @@ const authOptions = {
      * @param {Object} options.credentials - The credentials object.
      * @returns {boolean} - Returns true if the user is signed in.
      */
-    async signIn({ account, profile, user, credentials }) {
+    async signIn({ account, profile, user }) {
       const oauthId = account.providerAccountId;
       const username = profile.name.replace(" ", "");
       const email = profile.email;
       const provider = account.provider;
 
+      var newUser = {}
       var userExists = false;
 
-
-      // console.log(chalk.bgGreenBright("signIn: account:", JSON.stringify(account)));
-      // console.log(chalk.bgGreenBright("signIn: profile:", JSON.stringify(profile)));
-      // console.log(chalk.bgGreenBright("signIn: user:", JSON.stringify(user)));
-      if (provider === "github") {
-        const newUser = {
+      if (account && profile) {
+        newUser = {
           email: email,
           username: username,
           oauthId: oauthId,
-          provider: provider,
-        };
-
-        const options = {
-          expiresIn: "1h",
+          sub: oauthId,
+          oauthDetails: {
+            oauthProvider: provider,
+            oauthId: oauthId,
+          }
         }
-
-        const token = jwt.sign(newUser, process.env.GITHUB_SECRET, options);
-        console.log(chalk.bgGreenBright("signIn: token:", JSON.stringify(token)));
       }
 
+      var myJWT = jwt.sign(newUser, secretKey, signInOption)
 
+      console.log(chalk.bgBlueBright("myJWT: ", JSON.stringify(myJWT)))
+      // check if the user exists in the database
       try {
-        const userResponse = await getUser(profile.sub);
-        console.log(
-          chalk.blueBright(
-            `signIn: getUser: status code ${JSON.stringify(
-              userResponse.status
-            )} - ${JSON.stringify(userResponse.data)}`
-          )
-        );
-        if (userResponse.status === 200) {
+        console.log(chalk.bgBlueBright(newUser.oauthId));
+        // const userResponse = await getUser(newUser.oauthId, myJWT);
+        const user = await fetch(`http://localhost:8080/api/user/check/${newUser.oauthId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${myJWT}`,
+            "Content-Type": "application/json",
+            Origin: "http://localhost:3000",
+          }
+        })
+        if (user.status === 200) {
+          chalk.bgBlueBright("signIn: User exists 😊😊😊");
           userExists = true;
         }
       } catch (err) {
         if (err.response.status !== 404) {
-          console.log(chalk.bgRedBright("Error"));
+          console.log(chalk.bgRedBright("Error 😒😒😒"));
         }
       }
 
       // if the user does not exist try to create a new user
       if (userExists === false) {
-        const newUser = {
-          email: email,
-          username: username,
-          oauthId: oauthId,
-          oauthDetails: {
-            oauthProvider: provider,
-            oauthId: oauthId,
-          },
-        };
         try {
-          const newUserResponse = await createUser(JSON.stringify(newUser));
+          const newUserResponse = await createUser(JSON.stringify(newUser), myJWT);
           console.log(
             chalk.bgGreenBright(
               `signIn: createUser: status code ${newUserResponse.status
@@ -183,32 +185,27 @@ const authOptions = {
      * @returns {string} oauthProvider - The name of the authentication provider.
      * @returns {string} image - The URL of the user's profile picture.
      */
-    async jwt({ token, user, account, session, profile }) {
-      // console.log(chalk.bgGreenBright("signIn: account:", JSON.stringify(account)));
-      // console.log(chalk.bgBlueBright("signIn: profile:", JSON.stringify(profile)));
-      // console.log(chalk.bgRedBright("signIn: user:", JSON.stringify(user)));
-      // console.log(chalk.bgYellowBright("signIn: token:", JSON.stringify(token)));
-      // console.log(chalk.magentaBrightBright("signIn: session:", JSON.stringify(session)));
+    async jwt({ token, user, account, session, profile, isNewUser }) {
 
-
-      if (account && account.provider === "google" && user) {
-        return {
+      const isSignIn = user ? true : false;
+      if (isSignIn) {
+        token = {
           ...token,
-          jwt: account.id_token,
-          oauthId: account.providerAccountId,
           oauthProvider: account.provider,
-          image: profile.picture,
-        };
-      }
-      if (account && account.provider === "github" && user) {
-        return {
+          username: user.name.replace(" ", ""),
+          jwt: jwt.sign({
+            email: user.email,
+            sub: account.providerAccountId,
+            oauthProvider: account.provider,
+            username: user.name.replace(" ", "")
+          }, secretKey, sessionOption)
+        }
+      } else if (Date.now() / 1000 > token.exp - (60 * 5)) {
+        token = {
           ...token,
-          // jwt: account.id_token,
-          oauthId: account.providerAccountId,
-          oauthProvider: account.provider,
-          image: profile.avatar_url,
-        };
+        }
       }
+      console.log(chalk.bgYellowBright("TOKEN: ", JSON.stringify(token)));
       return token;
     },
   },
