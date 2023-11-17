@@ -28,7 +28,7 @@ const Navbar = () => {
     }
   }, [session, status]);
 
-  console.log("🦆🦆🦆 Navbar: session", session);
+  console.log(session);
   return (
     <div className="navbar shadow-lg shadow-black/40 backdrop-blur-sm text-white font-bold">
       <div className="flex-1">
@@ -72,8 +72,8 @@ const Navbar = () => {
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              {session?.user.image ? (
-                <Image src={session?.user.image} width={30} height={30} alt="User Avatar" />
+              {session?.image ? (
+                <Image src={session?.image} width={30} height={30} alt="User Avatar" />
               ) : (
                 <FaDumbbell className="align-middle" size={40} />
               )}

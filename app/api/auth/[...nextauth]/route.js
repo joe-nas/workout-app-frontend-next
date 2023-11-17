@@ -2,7 +2,7 @@ import chalk from "chalk";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-import { getUser, createUser } from "../../UserService";
+import { getUser, createUser, checkIfUserExists } from "../../UserService";
 import jwt from "jsonwebtoken";
 
 /**
@@ -25,7 +25,7 @@ import jwt from "jsonwebtoken";
 
 // const secretKey = Buffer.from(process.env.IRONDELIRIUM_SECRET, 'base64')
 const secretKey = process.env.IRONDELIRIUM_SECRET
-const signInOption = { expiresIn: '5000', algorithm: 'HS256' }
+const signInOption = { expiresIn: '5min', algorithm: 'HS256' }
 const sessionOption = { expiresIn: '1h', algorithm: 'HS256' }
 const authOptions = {
   providers: [
@@ -51,11 +51,9 @@ const authOptions = {
      * @returns {Object} - The updated session object.
      */
     async session({ session, user, token }) {
-      console.log(chalk.bgGreenBright("🐔🐔🐔 Session 1:", JSON.stringify(session)));
-      try {
-        console.log(chalk.bgGreenBright("👽👽👽 Session 2: ", JSON.stringify(token.jwt)))
 
-        // move to UserService.js
+      // 1. get user data from database
+      try {
         const sessionUser = await fetch(`http://localhost:8080/api/user/${token.sub}`, {
           method: 'GET',
           headers: {
@@ -64,32 +62,20 @@ const authOptions = {
             Origin: "http://localhost:3000",
           }
         })
-        const sessionUserData = await sessionUser.json()
 
-        console.log(chalk.bgGreenBright("🦝🦝🦝 Session 3 User:", JSON.stringify(sessionUserData)))
-        if (sessionUser.ok) {
-          console.log(
-            chalk.bgGreenBright(
-              `🐆🐆🐆 Session 4: getUser: status code ${sessionUser.status} - ${(JSON.stringify(sessionUserData))}`
-            )
-          );
-          return {
-            ...session,
-            jwt: token.jwt,
-            user: {
-              ...session.user,
-              mongoId: sessionUserData.id,
-              oauthId: sessionUserData.oauthId,
-              provider: sessionUserData.oauthDetails.oauthProvider,
-              // image: token.picture,
-            },
-          };
+        // 2. if user exists update session with user data
+        if (sessionUser.status === 200) {
+          const sessionUserData = await sessionUser.json()
+          session = { ...session, user: sessionUserData, jwt: token.jwt }
+          return session
         }
       } catch (err) {
-        console.log(chalk.bgRedBright("session: ", err));
+        console.log(chalk.bgRedBright("🥩🥩🥩 session: ", err));
       }
-      return session;
+      return session
     },
+
+
     /**
      * Sign in function for authentication.
      * @function
@@ -112,10 +98,10 @@ const authOptions = {
 
       if (account && profile) {
         newUser = {
-          email: email,
           username: username,
+          email: email,
           oauthId: oauthId,
-          sub: oauthId,
+          // sub: oauthId,
           oauthDetails: {
             oauthProvider: provider,
             oauthId: oauthId,
@@ -125,48 +111,27 @@ const authOptions = {
 
       var myJWT = jwt.sign(newUser, secretKey, signInOption)
 
-      console.log(chalk.bgBlueBright("myJWT: ", JSON.stringify(myJWT)))
-      // check if the user exists in the database
+      // 1. check if user exists and return true if they do
       try {
-        console.log(chalk.bgBlueBright(newUser.oauthId));
-        // const userResponse = await getUser(newUser.oauthId, myJWT);
-        const user = await fetch(`http://localhost:8080/api/user/check/${newUser.oauthId}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${myJWT}`,
-            "Content-Type": "application/json",
-            Origin: "http://localhost:3000",
-          }
-        })
-        if (user.status === 200) {
-          chalk.bgBlueBright("signIn: User exists 😊😊😊");
-          userExists = true;
+        userExists = await checkIfUserExists(newUser.oauthId, myJWT)
+
+        if (userExists) {
+          console.log(chalk.bgRedBright("🥩🥩🥩 signIn: userExists: ", userExists));
+          return true;
+
+          // 2. if they don't exist create user and return true
+        } else if (!userExists) {
+          console.log(chalk.bgRedBright("🥩🥩🥩 signIn: userExists: ", userExists));
+          console.log(chalk.bgRedBright("🥩🥩🥩 signIn: JWT: ", myJWT));
+
+          await createUser(newUser, myJWT)
+          return true;
         }
       } catch (err) {
-        if (err.response.status !== 404) {
-          console.log(chalk.bgRedBright("Error 😒😒😒"));
-        }
+        // 3. if there's an error return false
+        console.log(chalk.bgRedBright("🥩🥩🥩 signIn: ", err));
+        return false;
       }
-
-      // if the user does not exist try to create a new user
-      if (userExists === false) {
-        try {
-          const newUserResponse = await createUser(JSON.stringify(newUser), myJWT);
-          console.log(
-            chalk.bgGreenBright(
-              `signIn: createUser: status code ${newUserResponse.status
-              } - ${JSON.stringify(newUserResponse.data)}`
-            )
-          );
-        } catch (err) {
-          console.log(
-            chalk.bgRedBright(
-              `signIn createUser: error status: ${err.response.status}`
-            )
-          );
-        }
-      }
-      return true;
     },
 
     /**
@@ -196,7 +161,10 @@ const authOptions = {
           jwt: jwt.sign({
             email: user.email,
             sub: account.providerAccountId,
-            oauthProvider: account.provider,
+            oauthDetails: {
+              oauthProvider: account.provider,
+              oauthId: account.providerAccountId,
+            },
             username: user.name.replace(" ", "")
           }, secretKey, sessionOption)
         }
@@ -205,7 +173,6 @@ const authOptions = {
           ...token,
         }
       }
-      console.log(chalk.bgYellowBright("TOKEN: ", JSON.stringify(token)));
       return token;
     },
   },

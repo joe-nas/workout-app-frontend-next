@@ -1,16 +1,50 @@
 import { headers } from "@/next.config";
 import { apiClient } from "./ApiClient";
+import chalk from "chalk";
 
-export const getUser = async (oauthId, jwt) => {
-  const res = await apiClient.get(`/api/user/${oauthId}`, {
+// export const getUser = async (oauthId, jwt) => {
+//   const res = await apiClient.get(`/api/user/${oauthId}`, {
+//     headers: {
+//       Authorization: `Bearer ${jwt}`,
+//     },
+//   });
+//   return res;
+// };
+
+export const getUser = async (oauthId, myJWT) => {
+  const user = await fetch(`http://localhost:8080/api/user/${oauthId}`, {
+    method: 'GET',
     headers: {
-      Authorization: `Bearer ${jwt}`,
-    },
+      Authorization: `Bearer ${myJWT}`,
+      "Content-Type": "application/json",
+      Origin: "http://localhost:3000",
+    }
   });
-  return res;
-};
+  if (user.status === 200) {
+    return await user.json();
+  } else if (user.status === 404) {
+    return false;
+  }
+}
 
 
+
+
+export const checkIfUserExists = async (oauthId, myJWT) => {
+  const user = await fetch(`http://localhost:8080/api/user/check/${oauthId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${myJWT}`,
+      "Content-Type": "application/json",
+      Origin: "http://localhost:3000",
+    }
+  });
+  if (user.status === 200) {
+    return true;
+  } else if (user.status === 404) {
+    return false;
+  }
+}
 
 
 
@@ -24,15 +58,27 @@ export const deleteWorkout = async (oauthId, jwt, workoutId) => {
   return res;
 }
 
-export const createUser = async (user, jwt) => {
-  const createdUser = await apiClient.post("/api/user", user, {
+
+export const createUser = async (user, myJWT) => {
+  console.log(chalk.bgMagentaBright("🥩🥩🥩 createUser: user: ", JSON.stringify(user)))
+  const newUser = await fetch(`http://localhost:8080/api/user/create`, {
+    method: 'POST',
     headers: {
-      Authorization: `Bearer ${jwt}`,
+      Authorization: `Bearer ${myJWT}`,
       "Content-Type": "application/json",
+      Origin: "http://localhost:3000",
     },
+    body: JSON.stringify(user)
   });
-  return res;
-};
+  if (newUser.status === 200) {
+    return await user.json();
+  }
+}
+
+
+
+
+
 
 export const updateProfile = async (oauthId, jwt, user) => {
   const updatedProfile = await apiClient.put(
@@ -58,15 +104,14 @@ export const getUserWorkouts = async (oauthId, jwt) => {
         Authorization: `Bearer ${jwt}`,
         "Content-Type": "application/json",
         Origin: "http://localhost:3000",
-      },
-      next: {
-        tags: ['workouts']
-      },
-      cache: 'no-store'
+      }
     }
   );
-  const json = await receivedUserWorkouts.json();
-  return json;
+  if (receivedUserWorkouts.status === 200) {
+    return await receivedUserWorkouts.json();
+  } else if (receivedUserWorkouts.status === 404) {
+    throw new Error("No workouts found");
+  }
 };
 
 

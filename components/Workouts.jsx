@@ -17,10 +17,11 @@ const Workouts = () => {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        if (session?.user.jwt) {
-          const userWorkouts = await getUserWorkouts(session.user.oauthId, session.user.jwt)
+        if (session?.jwt) {
+          const userWorkouts = await getUserWorkouts(session.user.oauthId, session.jwt)
+          console.log(userWorkouts)
           setData(userWorkouts)
-          setJwt(session.user.jwt)
+          setJwt(session.jwt)
           setOauthId(session.user.oauthId)
           setIsLoading(false)
         }
@@ -30,7 +31,7 @@ const Workouts = () => {
     }
 
 
-    if (session?.user.jwt) {
+    if (session?.jwt) {
       fetchWorkouts()
     }
 
@@ -63,7 +64,6 @@ const Workouts = () => {
                 >
                   Delete Workout</button>
               </div>
-              {/* <DeleteWorkoutButton id={workout.id} jwt={jwt} oauthId={oauthId} /> */}
 
               {workout.exercises.map((exercise) => (
                 <div className="" key={exercise.exerciseName}>
